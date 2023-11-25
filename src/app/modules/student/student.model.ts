@@ -1,5 +1,4 @@
 import { Schema, model } from "mongoose";
-import bcrypt from "bcrypt";
 // import validator from "validator";
 import {
   StudentMethods,
@@ -9,7 +8,6 @@ import {
   TStudent,
   TUserName,
 } from "./student.interface";
-import config from "../../config";
 
 const userNameSchema = new Schema<TUserName>({
   firstName: {
@@ -89,10 +87,11 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       required: true,
       unique: true,
     },
-    password: {
-      type: String,
-      required: [true, "password is required"],
-      minlength: 6,
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      unique: true,
+      ref: "User",
     },
     name: {
       type: userNameSchema,
@@ -153,11 +152,6 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       type: String,
       required: true,
     },
-    isActive: {
-      type: String,
-      enum: ["active", "blocked"],
-      default: "active",
-    },
     isDeleted: {
       type: Boolean,
       default: false,
@@ -172,22 +166,6 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     },
   }
 );
-
-//  pre save middleware / hook: will work on create() and save()
-studentSchema.pre("save", async function (next) {
-  const user = this; // eslint-disable-line
-  user.password = await bcrypt.hash(
-    user.password,
-    Number(config.bcrypt_salt_rounds)
-  );
-  next();
-});
-
-// post save middleware / hook
-studentSchema.post("save", function (doc, next) {
-  doc.password = "";
-  next();
-});
 
 studentSchema.pre("find", async function (next) {
   this.find({ isDeleted: { $ne: true } });
