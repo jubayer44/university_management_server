@@ -1,28 +1,19 @@
-import { NextFunction, Request, Response } from "express";
 import { userServices } from "./user.service";
+import sendResponse from "../../utils/sendResponse";
+import httpStatus from "http-status";
+import catchAsync from "../../utils/catchAsync";
 
-const createStudent = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const { password, student } = req.body;
+const createStudent = catchAsync(async (req, res) => {
+  const { password, student } = req.body;
 
-    // const jodParseData = studentValidationSchema.parse(student);
-
-    const result = await userServices.createStudentIntoDB(password, student);
-    res.status(200).json({
-      success: true,
-      message: "Student created successfully",
-      data: result,
-    });
-
-    // eslint-disable-next-line
-  } catch (error: any) {
-    next(error);
-  }
-};
+  const result = await userServices.createStudentIntoDB(password, student);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Create Student successfully",
+    data: result,
+  });
+});
 
 export const userControllers = {
   createStudent,
