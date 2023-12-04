@@ -7,7 +7,7 @@ import { AcademicSemester } from "./academicSemester.model";
 const createAcademicServiceIntoDB = async (payload: TAcademicSemester) => {
   if (academicSemesterNameCodeMapper[payload.name] !== payload.code) {
     throw new AppError(
-      httpStatus.NOT_ACCEPTABLE,
+      httpStatus.BAD_REQUEST,
       "Invalid academic semester code"
     );
   }

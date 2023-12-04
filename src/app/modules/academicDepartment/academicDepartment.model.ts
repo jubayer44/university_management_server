@@ -25,10 +25,7 @@ AcademicDepartmentSchema.pre("save", async function (next) {
     name: this.name,
   });
   if (isDepartmentExists) {
-    throw new AppError(
-      httpStatus.ALREADY_REPORTED,
-      "Department is Already Exists"
-    );
+    throw new AppError(httpStatus.BAD_REQUEST, "Department is Already Exists");
   }
   next();
 });

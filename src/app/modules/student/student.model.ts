@@ -192,8 +192,8 @@ studentSchema.pre("aggregate", async function (next) {
 // creating mongoose virtual field
 studentSchema.virtual("fullName").get(function () {
   return `${
-    this.name.firstName
-  } ${this.name.middleName ? this.name.middleName : ""} ${this.name.lastName}`;
+    this?.name?.firstName
+  } ${this?.name?.middleName ? this?.name?.middleName : ""} ${this?.name?.lastName}`;
 });
 
 //// creating a custom instance method

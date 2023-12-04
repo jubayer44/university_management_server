@@ -43,7 +43,7 @@ academicSemesterSchema.pre("save", async function (next) {
   });
   if (isSemesterExist) {
     throw new AppError(
-      httpStatus.ALREADY_REPORTED,
+      httpStatus.BAD_REQUEST,
       "Academic semester already exists"
     );
   }
