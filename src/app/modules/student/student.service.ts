@@ -172,7 +172,7 @@ const updateStudentIntoDb = async (id: string, payload: Partial<TStudent>) => {
   return result;
 };
 
-export const studentServices = {
+export const StudentServices = {
   getAllStudentsFromDb,
   getSingleStudentFromDb,
   deleteSingleStudentFromDb,

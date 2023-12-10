@@ -1,11 +1,11 @@
 import catchAsync from "../../utils/catchAsync";
 import sendResponse from "../../utils/sendResponse";
 import httpStatus from "http-status";
-import { academicDepartmentServices } from "./academicDepartment.service";
+import { AcademicDepartmentServices } from "./academicDepartment.service";
 
 const createAcademicDepartment = catchAsync(async (req, res) => {
   const result =
-    await academicDepartmentServices.createAcademicDepartmentIntoDB(req.body);
+    await AcademicDepartmentServices.createAcademicDepartmentIntoDB(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -17,7 +17,7 @@ const createAcademicDepartment = catchAsync(async (req, res) => {
 
 const getAllAcademicDepartment = catchAsync(async (req, res) => {
   const result =
-    await academicDepartmentServices.getAllAcademicDepartmentFromDB();
+    await AcademicDepartmentServices.getAllAcademicDepartmentFromDB();
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -30,7 +30,7 @@ const getAllAcademicDepartment = catchAsync(async (req, res) => {
 const getSingleAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
   const result =
-    await academicDepartmentServices.getSingleAcademicDepartmentFromDB(
+    await AcademicDepartmentServices.getSingleAcademicDepartmentFromDB(
       departmentId
     );
 
@@ -45,7 +45,7 @@ const getSingleAcademicDepartment = catchAsync(async (req, res) => {
 const updateAcademicDepartment = catchAsync(async (req, res) => {
   const { departmentId } = req.params;
   const result =
-    await academicDepartmentServices.updateAcademicDepartmentIntoDB(
+    await AcademicDepartmentServices.updateAcademicDepartmentIntoDB(
       departmentId,
       req.body
     );
@@ -58,7 +58,7 @@ const updateAcademicDepartment = catchAsync(async (req, res) => {
   });
 });
 
-export const academicDepartmentControllers = {
+export const AcademicDepartmentControllers = {
   createAcademicDepartment,
   getAllAcademicDepartment,
   getSingleAcademicDepartment,

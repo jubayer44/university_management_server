@@ -18,7 +18,7 @@ const updateAcademicFacultyValidationSchema = z.object({
   }),
 });
 
-export const academicFacultyValidations = {
+export const AcademicFacultyValidations = {
   createAcademicFacultyValidationSchema,
   updateAcademicFacultyValidationSchema,
 };
