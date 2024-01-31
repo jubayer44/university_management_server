@@ -15,14 +15,6 @@ const userNameSchema = new Schema<TUserName>({
     trim: true,
     maxlength: [10, "First Name can't be more then 10 characters"],
     required: [true, "First Name is required"],
-    // Custom validator
-    // validate: {
-    //   validator: function (value: string) {
-    //     const firstNameStr = value.charAt(0).toUpperCase() + value.slice(1);
-    //     return firstNameStr === value;
-    //   },
-    //   message: "{VALUE} is not capitalize format",
-    // },
   },
   middleName: {
     type: String,
@@ -30,11 +22,6 @@ const userNameSchema = new Schema<TUserName>({
   lastName: {
     type: String,
     required: [true, "Last Name is required"],
-    // Using Validator Npm package
-    // validate: {
-    //   validator: (value: string) => validator.isAlpha(value),
-    //   message: "{VALUE} is not valid",
-    // },
   },
 });
 
@@ -112,10 +99,6 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
       type: String,
       required: true,
       unique: true,
-      // validate: {
-      //   validator: (email: string) => isEmail(email),
-      //   message: "{VALUE} is not valid email type",
-      // },
     },
     contactNo: {
       type: String,
@@ -150,7 +133,7 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     },
     profileImg: {
       type: String,
-      required: true,
+      default: "",
     },
     admissionSemester: {
       type: Schema.Types.ObjectId,
@@ -159,6 +142,10 @@ const studentSchema = new Schema<TStudent, StudentModel, StudentMethods>(
     academicDepartment: {
       type: Schema.Types.ObjectId,
       ref: "AcademicDepartment",
+    },
+    academicFaculty: {
+      type: Schema.Types.ObjectId,
+      ref: "AcademicFaculty",
     },
     isDeleted: {
       type: Boolean,

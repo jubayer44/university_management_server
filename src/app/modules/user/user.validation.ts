@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { UserStatus } from "./user.constant";
 
 const UserValidationSchema = z.object({
   password: z
@@ -7,6 +8,12 @@ const UserValidationSchema = z.object({
     })
     .min(6, { message: "Password must be at least 6 characters" })
     .optional(),
+});
+
+export const ChangeStatusValidationSchema = z.object({
+  body: z.object({
+    status: z.enum([...UserStatus] as [string, ...string[]]),
+  }),
 });
 
 export default UserValidationSchema;

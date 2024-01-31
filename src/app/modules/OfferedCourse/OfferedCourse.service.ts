@@ -8,6 +8,7 @@ import { SemesterRegistration } from "../semesterRegistation/semesterRegistratio
 import { TOfferedCourse } from "./OfferedCourse.interface";
 import { OfferedCourse } from "./OfferedCourse.model";
 import { isTimeConflict } from "./OfferedCourse.utils";
+import QueryBuilders from "../../builder/QueryBuilder";
 
 const createOfferedCourseIntoDb = async (payload: TOfferedCourse) => {
   const {
@@ -117,6 +118,28 @@ const createOfferedCourseIntoDb = async (payload: TOfferedCourse) => {
   return result;
 };
 
+const getAllOfferedCoursesFromDb = async (query: Record<string, unknown>) => {
+  const offeredCourseQuery = new QueryBuilders(OfferedCourse.find(), query)
+    .filter()
+    .sort()
+    .paginate()
+    .fields();
+
+  const result = await offeredCourseQuery.modelQuery;
+
+  return result;
+};
+
+const getSingleOfferedCourseFromDb = async (id: string) => {
+  const result = await OfferedCourse.findById(id);
+
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, "Offered course is not found");
+  }
+
+  return result;
+};
+
 const updateOfferedCourseIntoDb = async (
   id: string,
   payload: Pick<TOfferedCourse, "faculty" | "days" | "startTime" | "endTime">
@@ -170,7 +193,35 @@ const updateOfferedCourseIntoDb = async (
   }
 };
 
+const deleteSingleOfferedCourseFromDb = async (id: string) => {
+  const isOfferedCourseExists = await OfferedCourse.findById(id);
+
+  if (!isOfferedCourseExists) {
+    throw new AppError(httpStatus.NOT_FOUND, "Offered course is not found");
+  }
+
+  const semesterRegistration = isOfferedCourseExists.semesterRegistration;
+
+  const semesterRegistrationStatus = await SemesterRegistration.findById(
+    semesterRegistration
+  ).select("status");
+
+  if (semesterRegistrationStatus?.status !== "UPCOMING") {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "You can't Delete this offered Course"
+    );
+  }
+
+  const result = await OfferedCourse.findByIdAndDelete(id);
+
+  return result;
+};
+
 export const OfferedCourseServices = {
   createOfferedCourseIntoDb,
   updateOfferedCourseIntoDb,
+  getAllOfferedCoursesFromDb,
+  getSingleOfferedCourseFromDb,
+  deleteSingleOfferedCourseFromDb,
 };
