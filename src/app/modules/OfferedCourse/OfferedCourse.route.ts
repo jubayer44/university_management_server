@@ -7,9 +7,27 @@ import { USER_ROLE } from "../user/user.constant";
 
 const router = express.Router();
 
-router.get("/", OfferedCourseControllers.getAllOfferedCourses);
+router.get(
+  "/",
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student
+  ),
+  OfferedCourseControllers.getAllOfferedCourses
+);
 
-router.get("/:id", OfferedCourseControllers.getSingleOfferedCourse);
+router.get(
+  "/:id",
+  auth(
+    USER_ROLE.superAdmin,
+    USER_ROLE.admin,
+    USER_ROLE.faculty,
+    USER_ROLE.student
+  ),
+  OfferedCourseControllers.getSingleOfferedCourse
+);
 
 router.post(
   "/create-offered-course",
